@@ -8,6 +8,14 @@ def home_view(request, *args, **kwargs):
     return render(request, template_name="pages/home.html", context={})
 
 
+def tweet_list_view(request, *args, **kwargs):
+    tweets = Tweet.objects.all()
+    tweets_lst = [{"id": tweet.id, "content": tweet.content}
+                  for tweet in tweets]
+    data = {'response': tweets_lst}
+    return JsonResponse(data)
+
+
 def tweet_detail_view(request, pk, *args, **kwargs):
     """
     REST API VIEW
