@@ -5,6 +5,23 @@
 <title>This is amazing!</title>
 {% endblock title %}
 
+
+
 {% block content  %}
 <h1>Hello, world!</h1>
+<script>
+    const xhr = new XMLHttpRequest()
+    const method = 'GET'
+    const url = '/tweet/list/'
+    const responseType = 'json'
+
+    xhr.responseType = responseType
+    xhr.open(method, url)
+    xhr.onload = function () {
+        const serverResponse = xhr.response
+        const listedItems = serverResponse.response
+        console.log(listedItems)
+    }
+    xhr.send()
+</script>
 {% endblock content  %}

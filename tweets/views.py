@@ -12,7 +12,10 @@ def tweet_list_view(request, *args, **kwargs):
     tweets = Tweet.objects.all()
     tweets_lst = [{"id": tweet.id, "content": tweet.content}
                   for tweet in tweets]
-    data = {'response': tweets_lst}
+    data = {
+        'isUser': False,
+        'response': tweets_lst
+    }
     return JsonResponse(data)
 
 
