@@ -12,11 +12,13 @@ def home_view(request, *args, **kwargs):
 
 def tweet_create_view(request, *args, **kwargs):
     form = TweetForm(data=request.POST or None)
+    next_url = request.POST.get('next') or None
     if form.is_valid():
         tweet = form.save(commit=False)
         tweet.save()
         form = TweetForm()
-        return redirect(reverse('tweets:home'))
+        if next_url:
+            return redirect(next_url)
     return render(request, template_name='components/forms.html', context={"form": form})
 
 
