@@ -1,0 +1,17 @@
+{% extends '../pages/base.html' %}
+
+
+{% block title %}
+Tweet
+{% endblock title %}
+
+
+
+
+{% block content %}
+<form method="POSt">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-secondary">Save</button>
+</form>
+{% endblock content %}

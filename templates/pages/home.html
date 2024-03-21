@@ -8,8 +8,11 @@
 
 
 {% block content  %}
-<h1>Hello, world!</h1>
-<div id="tweets">
+<div class="row text-center">
+    <h1>Welcome to Tweetme</h1>
+</div>
+
+<div class="row" id="tweets">
     Replace me
 </div>
 <script>
@@ -19,12 +22,12 @@
     }
 
     function likeBtn(tweet) {
-        return `<button class='btn btn-primary' onclick=handleDidLike(${tweet.id},${tweet.likes})>${tweet.likes} Like</button>`
+        return `<button class='btn btn-primary' onclick=handleDidLike(${tweet.id},${tweet.likes})>${tweet.likes} Likes</button>`
 
     }
 
     function formatTweetElement(tweet) {
-        var formattedTweet = `<div class='mb-4 tweet' id=tweet-${tweet.id}>
+        var formattedTweet = `<div class='col-12 col-md-10 col-auto border rounded mb-4 py-4' id=tweet-${tweet.id}>
             <p>${tweet.content}</p>
             <div class='btn-group'>${likeBtn(tweet)}</div>
         </div>`
