@@ -14,6 +14,12 @@
 </div>
 <script>
     const tweetsElement = document.getElementById('tweets')
+
+    function formatTweetElement(tweet) {
+        var formattedTweet = `<div class='mb-4 tweet' id=tweet-${tweet.id}>
+            <p>${tweet.content}</p></div>`
+        return formattedTweet
+    }
     const xhr = new XMLHttpRequest()
     const method = 'GET'
     const url = '/tweet/list/'
@@ -24,13 +30,14 @@
     xhr.onload = function () {
         const serverResponse = xhr.response
         const listedItems = serverResponse.response
-        var finalTweet = ""
+        var finalTweetStr = ""
         var i;
         for (i = 0; i < listedItems.length; i++) {
-            var current = `<div class='mb-4'><h1>${listedItems[i].id}</h1><p>${listedItems[i].content}</p></div>`
-            finalTweet += current
+            var tweetObj = listedItems[i]
+            var currentItem = formatTweetElement(tweetObj)
+            finalTweetStr += currentItem
         }
-        tweetsElement.innerHTML = finalTweet
+        tweetsElement.innerHTML = finalTweetStr
 
     }
     xhr.send()
