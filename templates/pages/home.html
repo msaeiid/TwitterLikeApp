@@ -14,10 +14,20 @@
 </div>
 <script>
     const tweetsElement = document.getElementById('tweets')
+    function handleDidLike(id, numberOfLikes) {
+        console.log(id, numberOfLikes)
+    }
+
+    function likeBtn(tweet) {
+        return `<button class='btn btn-primary' onclick=handleDidLike(${tweet.id},${tweet.likes})>${tweet.likes} Like</button>`
+
+    }
 
     function formatTweetElement(tweet) {
         var formattedTweet = `<div class='mb-4 tweet' id=tweet-${tweet.id}>
-            <p>${tweet.content}</p></div>`
+            <p>${tweet.content}</p>
+            <div class='btn-group'>${likeBtn(tweet)}</div>
+        </div>`
         return formattedTweet
     }
     const xhr = new XMLHttpRequest()
