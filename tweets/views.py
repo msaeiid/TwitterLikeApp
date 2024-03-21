@@ -4,7 +4,12 @@ from .models import Tweet
 import random
 from .forms import TweetForm
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.conf import settings
+
+
+ALLOWED_HOSTS = settings.ALLOWED_HOSTS
+
 
 def home_view(request, *args, **kwargs):
     return render(request, template_name="pages/home.html", context={})
@@ -17,7 +22,7 @@ def tweet_create_view(request, *args, **kwargs):
         tweet = form.save(commit=False)
         tweet.save()
         form = TweetForm()
-        if next_url:
+        if next_url and url_has_allowed_host_and_scheme(next_url, ALLOWED_HOSTS):
             return redirect(next_url)
     return render(request, template_name='components/forms.html', context={"form": form})
 
