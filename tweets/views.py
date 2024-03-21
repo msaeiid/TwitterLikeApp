@@ -1,10 +1,10 @@
-from django.http import HttpResponse, Http404, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 from .models import Tweet
-import json
 import random
-from .froms import TweetForm
-
+from .forms import TweetForm
+from django.shortcuts import redirect
+from django.urls import reverse
 
 def home_view(request, *args, **kwargs):
     return render(request, template_name="pages/home.html", context={})
@@ -16,6 +16,7 @@ def tweet_create_view(request, *args, **kwargs):
         tweet = form.save(commit=False)
         tweet.save()
         form = TweetForm()
+        return redirect(reverse('tweets:home'))
     return render(request, template_name='components/forms.html', context={"form": form})
 
 
