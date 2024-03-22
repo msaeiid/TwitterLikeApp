@@ -39,6 +39,18 @@
 
             function handleTweetCreateFormDidSubmit(event) {
                 event.preventDefault()
+                const myForm = event.target
+                const myFormData = new FormData(myForm)
+                const endpoint = myForm.getAttribute('action')
+                const method = myForm.getAttribute('method')
+                const xhr = new XMLHttpRequest()
+                xhr.open(method, endpoint)
+                xhr.onload = function () {
+                    const serverResponse = xhr.response
+                    //console.log(serverResponse)
+                }
+                xhr.send(myFormData)
+                loadTweets(tweetsEl)
 
             }
     function handleDidLike(id, numberOfLikes) {
@@ -76,7 +88,7 @@
                 var currentItem = formatTweetElement(tweetObj)
                 finalTweetStr += currentItem
             }
-            tweetsElement.innerHTML = finalTweetStr
+            tweetsElements.innerHTML = finalTweetStr
 
         }
         xhr.send()
