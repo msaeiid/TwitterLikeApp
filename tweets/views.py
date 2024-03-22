@@ -23,7 +23,7 @@ def tweet_create_view(request, *args, **kwargs):
         tweet.save()
         # to check if request is ajax or not
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
-            return JsonResponse({}, status=201)
+            return JsonResponse(tweet.serialize(), status=201)
         form = TweetForm()
         if next_url and url_has_allowed_host_and_scheme(next_url, ALLOWED_HOSTS):
             return redirect(next_url)
@@ -33,8 +33,7 @@ def tweet_create_view(request, *args, **kwargs):
 
 def tweet_list_view(request, *args, **kwargs):
     tweets = Tweet.objects.all()
-    tweets_lst = [{"id": tweet.id, "content": tweet.content, "likes": random.randint(1, 2023)}
-                  for tweet in tweets]
+    tweets_lst = [tweet.serialize() for tweet in tweets]
     data = {
         'isUser': False,
         'response': tweets_lst
