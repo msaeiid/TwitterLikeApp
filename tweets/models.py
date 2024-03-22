@@ -6,6 +6,9 @@ class Tweet(models.Model):
     # in tutorial he used FileField
     image = models.ImageField(upload_to='tweets/', blank=True, null=True)
 
+    class Meta():
+        ordering = ['-id']
+
     def __str__(self) -> str:
         return f'{self.id}'
 
