@@ -21,6 +21,9 @@ def tweet_create_view(request, *args, **kwargs):
     if form.is_valid():
         tweet = form.save(commit=False)
         tweet.save()
+        # to check if request is ajax or not
+        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+            return JsonResponse({}, status=201)
         form = TweetForm()
         if next_url and url_has_allowed_host_and_scheme(next_url, ALLOWED_HOSTS):
             return redirect(next_url)
