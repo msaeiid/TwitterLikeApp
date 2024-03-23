@@ -58,7 +58,18 @@
                         tweetContainerElement.innerHTML = newTweetElement + ogHtml
                         myForm.reset()
                     }
+                    else if (xhr.status === 400) {
+                        const errorJson = xhr.response
+                        console.log(errorJson)
+                    }
+                    else if (xhr.status === 400) {
+                        const errorJson = xhr.response
+                        alert(errorJson)
+                    }
                 }
+                xhr.onerror(function () {
+                    alert('An error occurred, Please try again later.')
+                })
                 xhr.send(myFormData)
                 loadTweets(tweetsEl)
 
