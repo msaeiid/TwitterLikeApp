@@ -16,10 +16,16 @@ def home_view(request, *args, **kwargs):
 
 
 def tweet_create_view(request, *args, **kwargs):
+    if not request.user.is_authenticated:
+        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+            return JsonResponse({}, status=401)
+        return redirect(settings.LOGIN_URL)
+
     form = TweetForm(data=request.POST or None)
     next_url = request.POST.get('next') or None
     if form.is_valid():
         tweet = form.save(commit=False)
+        tweet.user = request.user  # or None  ## if user null=True in tweet model
         tweet.save()
         # to check if request is ajax or not
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
