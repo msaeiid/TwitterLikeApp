@@ -16,6 +16,9 @@ def home_view(request, *args, **kwargs):
 
 
 def tweet_create_view(request, *args, **kwargs):
+    """
+    REST API create Views -> DRF
+    """
     if not request.user.is_authenticated:
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
             return JsonResponse({}, status=401)
