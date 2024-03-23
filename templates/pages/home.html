@@ -40,12 +40,13 @@ This is amazing!
 
     function handleTweetFormError(msg, display) {
         var errorDiv = document.getElementById("tweet-create-form-error")
+        console.log('runnnnn')
         if (display === true) {
             errorDiv.setAttribute("class", "alert alert-danger")
             errorDiv.innerText = msg
         }
         else {
-            errorDiv.setAttribute("d-none class", "alert alert-danger")
+            errorDiv.setAttribute("class", "d-none alert alert-danger")
         }
     }
 
@@ -63,9 +64,10 @@ This is amazing!
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
         xhr.onload = function () {
             if (xhr.status === 201) {
+                console.log('before')
                 handleTweetFormError("", false)
+                console.log('after')
                 const newTweetJson = xhr.response
-                console.log(newTweetJson.likes)
                 const ogHtml = tweetContainerElement.innerHTML
                 const newTweetElement = formatTweetElement(newTweetJson)
                 tweetContainerElement.innerHTML = newTweetElement + ogHtml
@@ -85,17 +87,16 @@ This is amazing!
                     }
                 }
             }
-            else if (xhr.status === 400) {
+            else {
                 const errorJson = xhr.response
                 alert(errorJson)
             }
         }
-        xhr.onerror(function () {
+        xhr.onerror = function () {
             alert('An error occurred, Please try again later.')
-        })
+        }
         xhr.send(myFormData)
         loadTweets(tweetsEl)
-
     }
     function handleDidLike(id, numberOfLikes) {
         console.log(id, numberOfLikes)
@@ -108,8 +109,8 @@ This is amazing!
 
     function formatTweetElement(tweet) {
         var formattedTweet = `<div class='col-12 col-md-10 col-auto border rounded mb-4 py-4' id=tweet-${tweet.id}>
-    <p>${tweet.content}</p>
-    <div class='btn-group'>${likeBtn(tweet)}</div>
+<p>${tweet.content}</p>
+<div class='btn-group'>${likeBtn(tweet)}</div>
 </div>`
         return formattedTweet
     }
@@ -128,13 +129,14 @@ This is amazing!
             var finalTweetStr = ""
             var i;
             for (i = 0; i < listedItems.length; i++) {
-                var tweetObj = listedItems[i];
-                var currentItem = formatTweetElement(tweetObj);
-                finalTweetStr += currentItem;
+                var tweetObj = listedItems[i]
+                var currentItem = formatTweetElement(tweetObj)
+                finalTweetStr += currentItem
             }
-            tweetsElements.innerHTML = finalTweetStr;
-        };
-        xhr.send();
+            tweetsElements.innerHTML = finalTweetStr
+
+        }
+        xhr.send()
     }
     loadTweets(tweetContainerElement)
 </script>

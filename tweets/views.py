@@ -6,6 +6,8 @@ from .forms import TweetForm
 from django.shortcuts import redirect
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
+from rest_framework import status
+from .serializers import TweetSerializer
 
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
@@ -15,7 +17,7 @@ def home_view(request, *args, **kwargs):
     return render(request, template_name="pages/home.html", context={})
 
 
-def tweet_create_view(request, *args, **kwargs):
+def tweet_create_view_pure_django(request, *args, **kwargs):
     """
     REST API create Views -> DRF
     """
@@ -67,3 +69,12 @@ def tweet_detail_view(request, pk, *args, **kwargs):
         status = 404
         data["message"] = "Not Found"
     return JsonResponse(data=data, status=status)
+
+
+def tweet_create_view(request, *args, **kwargs):
+    if request.method == "POST":
+        serializer = TweetSerializer(data=request.POST or None)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+    return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
