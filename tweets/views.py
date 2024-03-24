@@ -8,7 +8,9 @@ from django.conf import settings
 from rest_framework import status
 from .serializers import TweetSerializer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework import permissions
+from rest_framework.authentication import SessionAuthentication
 
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
@@ -71,10 +73,12 @@ def tweet_detail_view_pure_django(request, pk, *args, **kwargs):
         data["message"] = "Not Found"
     return JsonResponse(data=data, status=status)
 
-# django rest framework
+# django rest framework- method based views
 
 
 @api_view(http_method_names=['POST'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([permissions.IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
     if request.method == "POST":
         serializer = TweetSerializer(data=request.POST or None)
@@ -93,8 +97,8 @@ def tweet_list_view(request, *args, **kwargs):
 @api_view(http_method_names=['GET'])
 def tweet_detail_view(request, pk, *args, **kwargs):
     tweet = Tweet.objects.filter(id=pk)
-    if not tweet:
+    if not tweet.exists():
         return Response({}, status=status.HTTP_404_NOT_FOUND)
     else:
-        serialize = TweetSerializer(instance=tweet, many=False)
+        serialize = TweetSerializer(tweet.first())
         return Response(data=serialize.data, status=status.HTTP_200_OK)
