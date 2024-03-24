@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['127.0.0.1']
 LOGIN_URL = '/admin'
 
 MAX_TWEET_LENGTH = 240
+TWEET_ACTION_OPTIONS = ['like', 'unlike', 'retweet']
 
 # Application definition
 

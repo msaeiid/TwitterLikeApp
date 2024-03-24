@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
 from rest_framework import status
-from .serializers import TweetSerializer
+from .serializers import TweetSerializer, TweetActionSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import permissions
@@ -115,3 +115,33 @@ def tweet_delete_view(request, pk, *args, **kwargs):
         return Response({"message": "You can't delete this tweet"}, status=status.HTTP_404_NOT_FOUND)
     tweets.first().delete()
     return Response({"message": "Tweet has been deleted!"}, status=status.HTTP_204_NO_CONTENT)
+
+
+@permission_classes([permissions.IsAuthenticated])
+@api_view(['POST'])
+def tweet_action_view(request,  *args, **kwargs):
+    serializer = TweetActionSerializer(data=request.POST)
+    if serializer.is_valid(raise_exception=True):
+        tweet_id = serializer.validated_data.get('id')
+        action = serializer.validated_data.get('action')
+
+        tweet = Tweet.objects.filter(pk=tweet_id)
+        if not tweet.exists():
+            return Response({"Message": "Tweet Not Found"}, status=status.HTTP_404_NOT_FOUND)
+
+        tweet = tweet.first()
+
+        if action == "like":
+            if not tweet.likes.filter(user=request.user).exists():
+                tweet.likes.add(request.user)
+
+        elif action == "unlike":
+            if tweet.likes.filter(user=request.user).exists():
+                tweet.likes.remove(request.user)
+
+        elif action == "retweet":
+            # this is TODO
+            pass
+
+            return Response({"Message": "Tweet Not Found"}, status=status.HTTP_200_OK)
+            return Response({"Message": "Tweet Not Found"}, status=status.HTTP_400_BAD_REQUEST)
