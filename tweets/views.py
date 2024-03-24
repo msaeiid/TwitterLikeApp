@@ -1,13 +1,14 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from .models import Tweet
-import random
 from .forms import TweetForm
 from django.shortcuts import redirect
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
 from rest_framework import status
 from .serializers import TweetSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
@@ -16,6 +17,7 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 def home_view(request, *args, **kwargs):
     return render(request, template_name="pages/home.html", context={})
 
+# pure django
 
 def tweet_create_view_pure_django(request, *args, **kwargs):
     """
@@ -43,8 +45,7 @@ def tweet_create_view_pure_django(request, *args, **kwargs):
     return render(request, template_name='components/forms.html', context={"form": form})
 
 
-
-def tweet_list_view(request, *args, **kwargs):
+def tweet_list_view_pure_django(request, *args, **kwargs):
     tweets = Tweet.objects.all()
     tweets_lst = [tweet.serialize() for tweet in tweets]
     data = {
@@ -54,7 +55,7 @@ def tweet_list_view(request, *args, **kwargs):
     return JsonResponse(data)
 
 
-def tweet_detail_view(request, pk, *args, **kwargs):
+def tweet_detail_view_pure_django(request, pk, *args, **kwargs):
     """
     REST API VIEW
     Consume by Javascript or Swift/Java/iOS/Android
@@ -70,11 +71,30 @@ def tweet_detail_view(request, pk, *args, **kwargs):
         data["message"] = "Not Found"
     return JsonResponse(data=data, status=status)
 
+# django rest framework
 
+
+@api_view(http_method_names=['POST'])
 def tweet_create_view(request, *args, **kwargs):
     if request.method == "POST":
         serializer = TweetSerializer(data=request.POST or None)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-    return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(http_method_names=['GET'])
+def tweet_list_view(request, *args, **kwargs):
+    tweets = Tweet.objects.all()
+    serializers = TweetSerializer(instance=tweets, many=True)
+    return Response(data=serializers.data, status=status.HTTP_200_OK)
+
+
+@api_view(http_method_names=['GET'])
+def tweet_detail_view(request, pk, *args, **kwargs):
+    tweet = Tweet.objects.filter(id=pk)
+    if not tweet:
+        return Response({}, status=status.HTTP_404_NOT_FOUND)
+    else:
+        serialize = TweetSerializer(instance=tweet, many=False)
+        return Response(data=serialize.data, status=status.HTTP_200_OK)
