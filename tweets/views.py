@@ -77,7 +77,7 @@ def tweet_detail_view_pure_django(request, pk, *args, **kwargs):
 
 
 @api_view(http_method_names=['POST'])
-@authentication_classes([SessionAuthentication])
+# @authentication_classes([SessionAuthentication])
 @permission_classes([permissions.IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
     if request.method == "POST":
@@ -102,3 +102,16 @@ def tweet_detail_view(request, pk, *args, **kwargs):
     else:
         serialize = TweetSerializer(tweet.first())
         return Response(data=serialize.data, status=status.HTTP_200_OK)
+
+
+@api_view(http_method_names=(['DELETE', 'POST']))
+@permission_classes([permissions.IsAuthenticated])
+def tweet_delete_view(request, pk, *args, **kwargs):
+    tweets = Tweet.objects.filter(pk=pk)
+    if not tweets.exists():
+        return Response({"message": "Requested tweet not found!"}, status=status.HTTP_404_NOT_FOUND)
+    tweets = tweets.filter(user=request.user)
+    if not tweets.exists():
+        return Response({"message": "You can't delete this tweet"}, status=status.HTTP_404_NOT_FOUND)
+    tweets.first().delete()
+    return Response({"message": "Tweet has been deleted!"}, status=status.HTTP_204_NO_CONTENT)
