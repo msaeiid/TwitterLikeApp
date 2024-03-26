@@ -6,7 +6,8 @@ MAX_TWEET_LENGTH = settings.MAX_TWEET_LENGTH
 
 TWEET_ACTION_OPTIONS = settings.TWEET_ACTION_OPTIONS
 
-class TweetSerializer(serializers.ModelSerializer):
+
+class TweetCreateSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Tweet
@@ -21,6 +22,18 @@ class TweetSerializer(serializers.ModelSerializer):
         return obj.likes.count()
 
 
+class TweetSerializer(serializers.ModelSerializer):
+    likes = serializers.SerializerMethodField(read_only=True)
+    parent = TweetCreateSerializer(source='parent', read_only=True)
+    # here the source parameter is not needed because parent is exist in tweet model
+    # it is for when the field name and model field are not same
+
+    class Meta:
+        model = Tweet
+        fields = ['id', 'content', 'likes', 'is_retweet', 'parent']
+
+    def get_likes(self, obj):
+        return obj.likes.count()
 
 
 class TweetActionSerializer(serializers.Serializer):

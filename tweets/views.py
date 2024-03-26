@@ -6,9 +6,13 @@ from django.shortcuts import redirect
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
 from rest_framework import status
-from .serializers import TweetSerializer, TweetActionSerializer
+from .serializers import (TweetSerializer,
+                          TweetActionSerializer,
+                          TweetCreateSerializer)
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.decorators import (api_view,
+                                       permission_classes,
+                                       authentication_classes)
 from rest_framework import permissions
 from rest_framework.authentication import SessionAuthentication
 
@@ -81,7 +85,7 @@ def tweet_detail_view_pure_django(request, pk, *args, **kwargs):
 @permission_classes([permissions.IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
     if request.method == "POST":
-        serializer = TweetSerializer(data=request.POST or None)
+        serializer = TweetCreateSerializer(data=request.POST or None)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

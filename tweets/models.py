@@ -31,3 +31,7 @@ class Tweet(models.Model):
 
     def __str__(self) -> str:
         return f'{self.id}'
+
+    @property
+    def is_retweet(self):
+        return self.parent is not None
