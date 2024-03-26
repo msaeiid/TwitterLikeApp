@@ -128,6 +128,7 @@ def tweet_action_view(request,  *args, **kwargs):
     if serializer.is_valid(raise_exception=True):
         tweet_id = serializer.validated_data.get('id')
         action = serializer.validated_data.get('action')
+        content = serializer.validated_data.get('content')
 
         tweet = Tweet.objects.filter(pk=tweet_id)
         if not tweet.exists():
@@ -146,7 +147,11 @@ def tweet_action_view(request,  *args, **kwargs):
             tweet.save()
 
         elif action == "retweet":
-            # this is TODO
-            pass
+            new_tweet = Tweet.objects.create(user=request.user,
+                                             parent=tweet,
+                                             content=content)
+            # I should return the retweet obj so
+            serializer = TweetSerializer(data=new_tweet)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.data, status=status.HTTP_200_OK)

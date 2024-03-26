@@ -16,6 +16,8 @@ class TweetLike(models.Model):
     def __str__(self) -> str:
         return f'{self.pk}'
 class Tweet(models.Model):
+    # it is used for retweeting
+    parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(
         User, related_name='tweet_user', blank=True, through=TweetLike)
@@ -29,10 +31,3 @@ class Tweet(models.Model):
 
     def __str__(self) -> str:
         return f'{self.id}'
-
-    # def serialize(self):
-    #     return {
-    #         'id': self.pk,
-    #         'content': self.content,
-    #         'likes': random.randint(1, 2024)
-    #     }
