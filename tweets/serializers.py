@@ -24,9 +24,10 @@ class TweetCreateSerializer(serializers.ModelSerializer):
 
 class TweetSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
-    parent = TweetCreateSerializer(source='parent', read_only=True)
-    # here the source parameter is not needed because parent is exist in tweet model
-    # it is for when the field name and model field are not same
+    parent = TweetCreateSerializer(read_only=True)
+    """if in some cases like below I want serializer field be different from model field -> og_tweet -> source='parent' is user like below
+        og_tweet = TweetCreateSerializer(source='parent', read_only=True)
+    """
 
     class Meta:
         model = Tweet

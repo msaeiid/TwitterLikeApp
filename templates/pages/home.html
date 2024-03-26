@@ -17,7 +17,7 @@ This is amazing!
         <form class="form" method="POST" action="{% url 'tweets:create' %}" id="tweet-create-form">
             {% csrf_token %}
             <div class="d-none alert alert-danger" id="tweet-create-form-error"></div>
-            <input type="hidden" value="/tweet/" name="next" />
+            <input type="hidden" value="" name="next" />
             <textarea name="content" required="required" id="content" cols="30" rows="10" class="form-control"
                 placeholder="Type a tweet ..."></textarea>
             <button type="submit" class="btn btn-primary">Tweet</button>
@@ -69,12 +69,13 @@ This is amazing!
         event.preventDefault()
         const myForm = event.target
         const myFormData = new FormData(myForm)
-        const endpoint = myForm.getAttribute('action')
+        const url = myForm.getAttribute('action')
         const method = myForm.getAttribute('method')
-        const responseType = "json"
+        const responseType = 'application/json'
         const xhr = new XMLHttpRequest()
-        xhr.responseType = responseType
-        xhr.open(method, endpoint)
+        //xhr.responseType = responseType
+        xhr.open(method, url)
+        xhr.setRequestHeader("content-type", "application/json")
         xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
         xhr.onload = function () {
@@ -109,11 +110,11 @@ This is amazing!
             alert('An error occurred, Please try again later.')
         }
         xhr.send(myFormData)
-        loadTweets(tweetsEl)
+        loadTweets(tweetContainerElement)
     }
 
     function handleTweetAction(id, numberOfLikes, action) {
-        const url = "/tweet/action/"
+        const url = "{% url 'tweets:action' %}"
         const method = "POST"
         const data = JSON.stringify({
             id: id,
@@ -153,18 +154,17 @@ This is amazing!
     function loadTweets(tweetsElements) {
         const xhr = new XMLHttpRequest()
         const method = 'GET'
-        const url = '/tweet/list/'
-        const responseType = 'json'
+        const url = "{% url 'tweets:list' %}"
+        const responseType = 'application/json'
 
         xhr.responseType = responseType
         xhr.open(method, url)
         xhr.onload = function () {
-            const serverResponse = xhr.response
-            const listedItems = serverResponse
+            const serverResponse = JSON.parse(xhr.response)
             var finalTweetStr = ""
             var i;
-            for (i = 0; i < listedItems.length; i++) {
-                var tweetObj = listedItems[i]
+            for (i = 0; i < serverResponse.length; i++) {
+                var tweetObj = serverResponse[i]
                 var currentItem = formatTweetElement(tweetObj)
                 finalTweetStr += currentItem
             }

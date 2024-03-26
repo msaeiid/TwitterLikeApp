@@ -81,14 +81,12 @@ def tweet_detail_view_pure_django(request, pk, *args, **kwargs):
 
 
 @api_view(http_method_names=['POST'])
-# @authentication_classes([SessionAuthentication])
 @permission_classes([permissions.IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
-    if request.method == "POST":
-        serializer = TweetCreateSerializer(data=request.POST or None)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    serializer = TweetCreateSerializer(data=request.POST or None)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(http_method_names=['GET'])

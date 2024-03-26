@@ -20,5 +20,7 @@ from tweets.views import home_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('tweet/', include('tweets.urls'), name='tweet')
+    path('', home_view, name='home'),
+    path('api/tweet/', include('tweets.urls'), name='tweet'),
+
 ]
