@@ -114,7 +114,7 @@ def tweet_delete_view(request, pk, *args, **kwargs):
         return Response({"message": "Requested tweet not found!"}, status=status.HTTP_404_NOT_FOUND)
     tweets = tweets.filter(user=request.user)
     if not tweets.exists():
-        return Response({"message": "You can't delete this tweet"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"message": "You can't delete this tweet"}, status=status.HTTP_401_UNAUTHORIZED)
     tweets.first().delete()
     return Response({"message": "Tweet has been deleted!"}, status=status.HTTP_204_NO_CONTENT)
 
@@ -130,7 +130,7 @@ def tweet_action_view(request,  *args, **kwargs):
     if serializer.is_valid(raise_exception=True):
         tweet_id = serializer.validated_data.get('id')
         action = serializer.validated_data.get('action')
-        content = serializer.validated_data.get('content')
+        content = serializer.validated_data.get('content') or None
 
         tweet = Tweet.objects.filter(pk=tweet_id)
         if not tweet.exists():
@@ -141,19 +141,19 @@ def tweet_action_view(request,  *args, **kwargs):
         if action == "like":
             # if not tweet.likes.filter(user=request.user).exists():
             tweet.likes.add(request.user)
-            tweet.save()
+            serializer = TweetSerializer(tweet)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         elif action == "unlike":
             # if tweet.likes.filter(user=request.user).exists():
             tweet.likes.remove(request.user)
-            tweet.save()
+            serializer = TweetSerializer(tweet)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         elif action == "retweet":
             new_tweet = Tweet.objects.create(user=request.user,
                                              parent=tweet,
                                              content=content)
             # I should return the retweet obj so
-            serializer = TweetSerializer(data=new_tweet)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            serializer = TweetSerializer(new_tweet)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
