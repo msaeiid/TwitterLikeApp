@@ -29,3 +29,7 @@ print(f'remove all users who like the tweet\n{empty_users}')
 
 obj = TweetLike.objects.create(user=user, tweet=tweet)
 print(f'# we can create directly like below:\n{obj}')
+
+
+# 51-Verify or Install Nodejs
+# installed Nodejs then npm --version and then npx create-react-app
