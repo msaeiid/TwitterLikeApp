@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-n(_42t$3u9y6t(%nqmp==2dowx5#_4$t&_yz8-)asec5pt_jo_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 LOGIN_URL = '/admin'
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Third-party
+    'corsheaders',
     'rest_framework',
     # Internal
     'tweets.apps.TweetsConfig'
@@ -51,6 +52,10 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -133,6 +138,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 DEFAULT_RENDERER_CLASSES = ['rest_framework.renderers.JSONRenderer']
+
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_URLS_REGEX = r"^/api/.*$"
 
 if DEBUG:
     DEFAULT_RENDERER_CLASSES += [

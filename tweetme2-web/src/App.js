@@ -6,7 +6,7 @@ function loadTweets(callback) {
   const xhr = new XMLHttpRequest()
   const method = 'GET'
   const url = "http://127.0.0.1:8000/api/tweet/"
-  const responseType = 'application/json'
+  const responseType = "json"
 
   xhr.responseType = responseType
   xhr.open(method, url)
@@ -14,7 +14,6 @@ function loadTweets(callback) {
     callback(xhr.response,xhr.status)
   }
   xhr.onerror = function (e) {
-    console.log(e)
     callback({ "message": "The request was an error." },400)
   }
   xhr.send()
@@ -25,12 +24,11 @@ function App() {
   
   useEffect(() => {
     const myCallback = (response, status) => {
-      console.log(response,status)
       if (status === 200) {
-        setTweets(response)
+        setTweets(response) 
       }
       else {
-        alert("There was an error")
+        alert('There was an error with this')
       }
     }
     loadTweets(myCallback)
