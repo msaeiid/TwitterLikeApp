@@ -29,3 +29,8 @@ Long term todos
 - Notifications
 - DM (Direct messages)
 - Explore -> finding hashtags
+
+6:43:54
+67-Create Tweet in React
+ in this section the reason we don't user JWT for authentication is that we wanted django to handle login and logout for us
+ so handling login and logout in two authentication model makes the project complicated also authentication in two places doesn't mean!!!

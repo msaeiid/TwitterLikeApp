@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { loadTweets } from '../lookup';
+import { loadTweets,createTweet } from '../lookup';
 
 
 export function TweetComponent(props) {
-  const textAreaRef = React.createRef()
-  const [newTweets,setNewTweets]=useState([])
+  const textAreaRef = React.createRef();
+  const [newTweets, setNewTweets] = useState([]);
   const handleSubmit = (event) => {
-    event.preventDefault()
-    const newVal = textAreaRef.current.value
-    let tempNewTweets = [...newTweets]
-    tempNewTweets.unshift({
-      content: newVal,
-      likes: 0,
-      id:13432
-    })
-    setNewTweets(tempNewTweets)
-    textAreaRef.current.value=''
+    event.preventDefault();
+    const newVal = textAreaRef.current.value;
+    let tempNewTweets = [...newTweets];
+
+    createTweet(newVal, function (response,status) {
+      if (status === 201) {
+        tempNewTweets.unshift(response); 
+      }
+      else {
+        console.log(response,status)
+        alert('An error ocurred,please try again!');
+      }
+    });
+    setNewTweets(tempNewTweets);
+    textAreaRef.current.value = '';
   }
   return <div className={props.className}>
-    <div className='col-12 mb-3'> 
-    <form onSubmit={handleSubmit}>
-      <textarea ref={textAreaRef} required={true} name='tweet' className='form-control'></textarea>
-      <button type='submit' className='btn btn-primary my-3'>Tweet</button>
-    </form>
+    <div className='col-12 mb-3'>
+      <form onSubmit={handleSubmit}>
+        <textarea ref={textAreaRef} required={true} name='tweet' className='form-control'></textarea>
+        <button type='submit' className='btn btn-primary my-3'>Tweet</button>
+      </form>
     </div>
-    <TweetLists newTweets={newTweets } />
-  </div>
-}
+    <TweetLists newTweets={newTweets} />
+  </div>;
+};
 
   
   export function TweetLists(props) {
