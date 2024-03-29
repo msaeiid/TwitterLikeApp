@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from tweets.views import home_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,3 +26,8 @@ urlpatterns = [
     path('api/tweet/', include('tweets.urls'), name='tweet'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        # ... the rest of your URLconf goes here ...
+    ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
