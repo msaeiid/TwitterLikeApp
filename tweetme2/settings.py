@@ -145,6 +145,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 DEFAULT_RENDERER_CLASSES = ['rest_framework.renderers.JSONRenderer']
+DEFAULT_AUTHENTICATION_CLASSES = [
+    'rest_framework.authentication.SessionAuthentication']
 
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -155,16 +157,17 @@ if DEBUG:
         'rest_framework.renderers.BrowsableAPIRenderer',
     ]
 
+    DEFAULT_AUTHENTICATION_CLASSES += [
+        'tweetme2.rest_api.dev.DevAuthentication',
+    ]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES,
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],

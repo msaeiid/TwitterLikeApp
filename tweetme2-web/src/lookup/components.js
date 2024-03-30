@@ -24,8 +24,8 @@ function lookup(method, endpoint, callback, data) {
   }
   const url = `http://127.0.0.1:8000/api/${endpoint}`;
   const xhr = new XMLHttpRequest();
-  xhr.responseType = "json";
   xhr.open(method, url);
+  xhr.setRequestHeader("content-type", "application/json");
   const csrftoken = getCookie('csrftoken');
   if (csrftoken) {
     xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest");
