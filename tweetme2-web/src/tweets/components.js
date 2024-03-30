@@ -8,18 +8,21 @@ export function TweetComponent(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const newVal = textAreaRef.current.value;
-    let tempNewTweets = [...newTweets];
 
-    createTweet(newVal, function (response,status) {
+
+    const handleBackendUpdate = (response, status) => {
+      let tempNewTweets = [...newTweets];
       if (status === 201) {
         tempNewTweets.unshift(response); 
+        setNewTweets(tempNewTweets);
       }
       else {
         console.log(response,status)
         alert('An error ocurred,please try again!');
       }
-    });
-    setNewTweets(tempNewTweets);
+    }
+
+    createTweet(newVal,handleBackendUpdate);
     textAreaRef.current.value = '';
   }
   return <div className={props.className}>
