@@ -7,9 +7,11 @@ import {
 
 
 export function TweetComponent(props) {
-  console.log(props)
   const textAreaRef = React.createRef();
   const [newTweets, setNewTweets] = useState([]);
+
+  const canTweet = props.canTweet === "false" ? false : true;
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const newVal = textAreaRef.current.value;
@@ -18,31 +20,32 @@ export function TweetComponent(props) {
     const handleBackendUpdate = (response, status) => {
       let tempNewTweets = [...newTweets];
       if (status === 201) {
-        tempNewTweets.unshift(response); 
+        tempNewTweets.unshift(response);
         setNewTweets(tempNewTweets);
       }
       else {
-        console.log(response,status)
+        console.log(response, status)
         alert('An error ocurred,please try again!');
       }
     }
 
-    apiTweetCreate(newVal,handleBackendUpdate);
+    apiTweetCreate(newVal, handleBackendUpdate);
     textAreaRef.current.value = '';
   }
-  return <div className={props.className}>
-    <div className='col-12 mb-3'>
+  return <div div className = { props.className } >
+    {canTweet === true && <div className='col-12 mb-3'>
       <form onSubmit={handleSubmit}>
         <textarea ref={textAreaRef} required={true} name='tweet' className='form-control'></textarea>
         <button type='submit' className='btn btn-primary my-3'>Tweet</button>
       </form>
-    </div>
-    <TweetLists newTweets={newTweets} />
-  </div>;
+    </div>}
+    <TweetLists newTweets={newTweets} {...props} />
+  </div>
 };
 
   
-  export function TweetLists(props) {
+export function TweetLists(props) {
+
     const [tweetsInit, setTweetsInit] = useState([]);
     const [tweets, setTweets] = useState([]);
     const [tweetDidSet, setTweetDidSet] = useState(false);
@@ -64,9 +67,9 @@ export function TweetComponent(props) {
             alert('There was an error with this');
           }
         };
-        apiTweetList(handleTweetListLookup);
+        apiTweetList(props.username,handleTweetListLookup);
       };
-    }, [setTweetsInit, tweetDidSet, setTweetDidSet]);
+    }, [setTweetsInit, tweetDidSet, setTweetDidSet,props.username]);
 
     const handleDidRetweet = (newTweet) => {
       const updateTweetInit = [...tweetsInit];
