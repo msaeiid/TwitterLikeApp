@@ -17,7 +17,7 @@ if (appEl) {
 const e = React.createElement;
 
 const tweetEl=document.getElementById('tweetme2')
-if (tweetEl) {
+if (tweetEl) {  
   //console.log(tweetEl.dataset)
   const root = ReactDOM.createRoot(tweetEl);
   root.render(e(TweetComponent, tweetEl.dataset),tweetEl); 
