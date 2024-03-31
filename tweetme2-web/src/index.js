@@ -14,15 +14,13 @@ if (appEl) {
     </React.StrictMode>
   ); 
 }
+const e = React.createElement;
 
 const tweetEl=document.getElementById('tweetme2')
 if (tweetEl) {
+  //console.log(tweetEl.dataset)
   const root = ReactDOM.createRoot(tweetEl);
-  root.render(
-    <React.StrictMode>
-      <TweetComponent />
-    </React.StrictMode>
-  ); 
+  root.render(e(TweetComponent, tweetEl.dataset),tweetEl); 
 }
 
 // If you want to start measuring performance in your app, pass a function

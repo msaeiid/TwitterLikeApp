@@ -7,6 +7,7 @@ import {
 
 
 export function TweetComponent(props) {
+  console.log(props)
   const textAreaRef = React.createRef();
   const [newTweets, setNewTweets] = useState([]);
   const handleSubmit = (event) => {
