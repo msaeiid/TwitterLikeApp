@@ -4,5 +4,9 @@ import { Tweet } from './detail';
 import { TweetLists } from './lists';
 
 export {
-    Tweet, ActionBtn,TweetLists,TweetComponent,TweetDetailComponent
+    Tweet,
+    ActionBtn,
+    TweetLists,
+    TweetComponent,
+    TweetDetailComponent
 }

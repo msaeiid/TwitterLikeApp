@@ -43,5 +43,7 @@ export function TweetDetailComponent(props) {
     
   }, [didLookup, setDidLookup, tweetId]);
   
-  return tweet === null ? null : <Tweet tweet={tweet} className={props.className} />;
+  return tweet === null ?
+    null :
+    <Tweet tweet={tweet} className={props.className} />;
 }

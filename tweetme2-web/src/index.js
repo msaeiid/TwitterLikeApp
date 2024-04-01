@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { TweetComponent, TweetDetailComponent } from './tweets';
+import {
+  TweetComponent,
+  TweetDetailComponent
+} from './tweets';
 
 const appEl=document.getElementById('root')
 if (appEl) {
@@ -22,10 +25,10 @@ if (tweetEl) {
   root.render(e(TweetComponent, tweetEl.dataset)); 
 }
 
-const tweetDetailElements = document.querySelectorAll(".tweetme2-detail");
-const root = ReactDOM.createRoot(tweetDetailElements);
+const tweetDetailElements = document.querySelectorAll(".tweetme-2-detail");
+//const root = ReactDOM.createRoot(tweetDetailElements);
 tweetDetailElements.forEach(container => {
-  root.render(
+  ReactDOM.render(
     e(TweetDetailComponent, container.dataset),
     container);
 })
