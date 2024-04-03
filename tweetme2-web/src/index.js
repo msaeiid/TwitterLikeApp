@@ -25,13 +25,11 @@ if (tweetEl) {
   root.render(e(TweetComponent, tweetEl.dataset)); 
 }
 
-const tweetDetailElements = document.querySelectorAll(".tweetme-2-detail");
-//const root = ReactDOM.createRoot(tweetDetailElements);
-tweetDetailElements.forEach(container => {
-  ReactDOM.render(
-    e(TweetDetailComponent, container.dataset),
-    container);
-})
+const tweetDetailElements = document.getElementById("tweetme-2-detail");
+if (tweetDetailElements) {
+  const root = ReactDOM.createRoot(tweetDetailElements);
+  root.render(e(TweetDetailComponent, tweetDetailElements.dataset)); 
+}
 
 
 
