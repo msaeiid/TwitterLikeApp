@@ -157,9 +157,9 @@ if DEBUG:
         'rest_framework.renderers.BrowsableAPIRenderer',
     ]
 
-    DEFAULT_AUTHENTICATION_CLASSES += [
-        'tweetme2.rest_api.dev.DevAuthentication',
-    ]
+    # DEFAULT_AUTHENTICATION_CLASSES += [
+    #     'tweetme2.rest_api.dev.DevAuthentication',
+    # ]
 
 
 REST_FRAMEWORK = {
