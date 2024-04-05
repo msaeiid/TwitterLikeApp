@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from rest_framework.exceptions import ValidationError
 from django.shortcuts import render
 from ..models import Tweet
 from ..forms import TweetForm
@@ -139,7 +140,11 @@ def tweet_action_view(request,  *args, **kwargs):
 
         if action == "like":
             # if not tweet.likes.filter(user=request.user).exists():
-            tweet.likes.add(request.user)
+            try:
+                tweet.likes.add(request.user)
+            except:
+                return Response(
+                    'Authentication credentials were not provided.', status=status.HTTP_403_FORBIDDEN)
             serializer = TweetSerializer(tweet)
             return Response(serializer.data, status=status.HTTP_200_OK)
 

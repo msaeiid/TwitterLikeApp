@@ -23,7 +23,7 @@ export function Tweet(props) {
   const isDetail = `${tweet.id}`===`${urlTweetId}`;
   const handleLink = (event) => {
     event.preventDefault();
-    window.location.href = `${tweet.id}/`
+    window.location.href = `/${tweet.id}`
   }
   const handlePerformAction = (newActionTweet, status) => {
     if (status === 200) {

@@ -36,6 +36,13 @@ export function lookup(method, endpoint, callback, data) {
     } 
   }
   xhr.onload = function () {
+    if (xhr.status === 403) {
+      const detail = xhr.response.detail;
+      const error_message = "Authentication credentials were not provided.";
+      if (detail === error_message || xhr.response === error_message) {
+        window.location.href = '/login?showLoginRequired=true';
+      }
+    }
     callback(xhr.response, xhr.status);
   };
   xhr.onerror = function () {
