@@ -1,0 +1,20 @@
+{% extends '../pages/base.html' %}
+
+
+{% block title %}
+{{title}}
+{% endblock title %}
+
+
+{% block content %}
+<div class="col-10 col-md-4 mx-auto">
+    <h1>{{title}}</h1>
+    <p>
+        {% if description %}
+        {{description}}
+        {% endif %}
+    </p>
+
+    {% include '../components/forms.html' with form=form btn_label=btn_label %}
+</div>
+{% endblock content %}

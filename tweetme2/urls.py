@@ -18,11 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from accounts.views import login_view, logout_view, registration_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('tweets.urls')),
-    path('api/tweet/', include('tweets.api.urls'), name='tweet')
+    path('api/tweet/', include('tweets.api.urls'), name='tweet'),
+
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('register/', registration_view, name='register'),
 ]
 
 if settings.DEBUG:
