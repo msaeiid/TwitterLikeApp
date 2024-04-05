@@ -16,18 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from tweets.views import (home_view, local_tweet_detail_view,
-                          local_tweet_list_view, local_tweet_profile_view)
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', home_view, name='home'),
-    path('', local_tweet_list_view, name='list'),
-    path('<int:tweet_id>/', local_tweet_detail_view, name='detail'),
-    path('profile/<str:username>', local_tweet_profile_view, name='profile'),
-    path('api/tweet/', include('tweets.urls'), name='tweet')
+    path('tweet/', include('tweets.urls')),
+    path('api/tweet/', include('tweets.api.urls'), name='tweet')
 ]
 
 if settings.DEBUG:
