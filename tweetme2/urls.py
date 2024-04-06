@@ -22,12 +22,15 @@ from accounts.views import login_view, logout_view, registration_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # tweet
     path('', include('tweets.urls')),
     path('api/tweet/', include('tweets.api.urls'), name='tweet'),
-
+    # accounts
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('register/', registration_view, name='register'),
+    # profile
+    path('profile/', include('profiles.urls'), name='profile')
 ]
 
 if settings.DEBUG:
