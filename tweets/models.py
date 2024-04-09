@@ -18,7 +18,8 @@ class TweetLike(models.Model):
 class Tweet(models.Model):
     # it is used for retweeting
     parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='tweets')
     likes = models.ManyToManyField(
         User, related_name='tweet_user', blank=True, through=TweetLike)
     content = models.TextField(null=True, blank=True)

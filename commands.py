@@ -33,3 +33,8 @@ print(f'# we can create directly like below:\n{obj}')
 
 # 51-Verify or Install Nodejs
 # installed Nodejs then npm --version and then npx create-react-app
+
+
+# 9:35:35
+# 89-ManyToManyField and Reverse Relations
+# in this episode he talks about related_name field on foreign key which we can with them access for the related object versus "(fieldname)_set"
