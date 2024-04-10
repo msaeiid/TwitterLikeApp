@@ -20,7 +20,7 @@
         -> Follow Button
     -> Feed 
         -> User's feed only?
-        -> User +who the follow?
+        -> User + who the follow?
 
 
 3. Following / Followers

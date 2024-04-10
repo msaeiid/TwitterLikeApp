@@ -97,6 +97,20 @@ def tweet_list_view(request, *args, **kwargs):
 
 
 @api_view(http_method_names=['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def tweet_feed_view(request, *args, **kwargs):
+    if request.user.following.exists():
+        followed_users_id = [
+            profile.user.id for profile in request.user.following.all()]
+        # It's not a good practice ...
+        tweets = Tweet.objects.filter(
+            user__id__in=followed_users_id).order_by('-timestamp')
+        serializers = TweetSerializer(instance=tweets, many=True)
+        return Response(data=serializers.data, status=status.HTTP_200_OK)
+
+
+
+@api_view(http_method_names=['GET'])
 def tweet_detail_view(request, pk, *args, **kwargs):
     tweet = Tweet.objects.filter(id=pk)
     if not tweet.exists():
