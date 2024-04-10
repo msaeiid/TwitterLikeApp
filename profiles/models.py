@@ -8,6 +8,9 @@ class FollowRelation(models.Model):
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self) -> str:
+        return f'{self.pk}'
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
