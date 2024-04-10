@@ -15,6 +15,13 @@ def user_follow_view(request, username, *args, **kwargs):
     current_user = request.user
     followed_user = User.objects.filter(username=username)
 
+    # prevent user fom following itself, Its not a good practice to do it here we can handle it with a signal on save or create of FollowRelation to check user and profile are not same...
+    if current_user == followed_user.first():
+        data = {
+            'count': current_user.profile.followers.count()
+        }
+        return Response(data=data, status=status.HTTP_200_OK)
+
     if not followed_user.exists():
         return Response({}, status=status.HTTP_404_NOT_FOUND)
     followed_user = followed_user.first()
