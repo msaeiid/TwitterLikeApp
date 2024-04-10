@@ -15,6 +15,7 @@ from rest_framework.decorators import (api_view,
                                        permission_classes)
 from rest_framework import permissions
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.pagination import PageNumberPagination
 
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
@@ -92,16 +93,15 @@ def tweet_list_view(request, *args, **kwargs):
     username = request.GET.get('username') or None
     if username:
         tweets = tweets.filter(user__username__iexact=username)
-    serializers = TweetSerializer(instance=tweets, many=True)
-    return Response(data=serializers.data, status=status.HTTP_200_OK)
+
+    return get_paginated_queryset_response(tweets, request, TweetSerializer)
 
 
 @api_view(http_method_names=['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def tweet_feed_view(request, *args, **kwargs):
     tweets = Tweet.objects.feed(request.user)
-    serializers = TweetSerializer(instance=tweets, many=True)
-    return Response(data=serializers.data, status=status.HTTP_200_OK)
+    return get_paginated_queryset_response(tweets, request, TweetSerializer)
 
 
 
@@ -170,3 +170,11 @@ def tweet_action_view(request,  *args, **kwargs):
             # I should return the retweet obj so
             serializer = TweetSerializer(new_tweet)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+def get_paginated_queryset_response(qs, request, serializer):
+    paginator = PageNumberPagination()
+    paginator.page_size = 4
+    paginated_qs = paginator.paginate_queryset(qs, request)
+    serializer = serializer(paginated_qs, many=True)
+    return paginator.get_paginated_response(serializer.data)
