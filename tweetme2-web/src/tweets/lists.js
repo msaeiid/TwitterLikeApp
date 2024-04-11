@@ -5,6 +5,7 @@ import { Tweet } from './detail';
 export function TweetLists(props) {
   const [tweetsInit, setTweetsInit] = useState([]);
   const [tweets, setTweets] = useState([]);
+  const [nextUrl, setNextUrl] = useState(null);
   const [tweetDidSet, setTweetDidSet] = useState(false);
   useEffect(() => {
     let final = [...props.newTweets].concat(tweetsInit);
@@ -16,7 +17,8 @@ export function TweetLists(props) {
     if (tweetDidSet === false) {
       const handleTweetListLookup = (response, status) => {
         if (status === 200) {
-          setTweetsInit(response);
+          setNextUrl(response.next)
+          setTweetsInit(response.results);
           setTweetDidSet(true);
         }
         else {
@@ -34,10 +36,13 @@ export function TweetLists(props) {
     updateFinalTweets.unshift(newTweet);//he make's a bug here
     setTweets(updateFinalTweets);
   }
-  return tweets.map((item, index) => {
+  return <React.Fragment> {tweets.map((item, index) => {
     return <Tweet tweet={item}
       didRetweet={handleDidRetweet}
       className='my-5 py-5 border bg-white text-dark'
       key={`${index}-{item.id}`} />
-  });
+  })}
+    {nextUrl  !==null && <button className='btn btn-primary'>Next Page</button>}
+    </React.Fragment>
+
 }
