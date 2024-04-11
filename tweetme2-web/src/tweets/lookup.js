@@ -9,10 +9,14 @@ export function apiTweetDetail(tweet_id, callback) {
   lookup("GET", endpoint, callback);
 }  
   
-export function apiTweetList(username, callback) {
+export function apiTweetList(username, callback,nextUrl) {
   let endpoint = "tweet/";
   if (username) {
     endpoint = `tweet/?username=${username}`;
+  }
+  if (nextUrl !== null && nextUrl !== undefined) {
+
+    endpoint = "tweet/?" + nextUrl.split("?")[1];
   }
   lookup("GET", endpoint, callback);
 }
