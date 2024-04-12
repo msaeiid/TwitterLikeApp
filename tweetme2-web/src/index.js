@@ -5,7 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {
   TweetComponent,
-  TweetDetailComponent
+  TweetDetailComponent,
+  FeedComponent,
 } from './tweets';
 
 const appEl=document.getElementById('root')
@@ -24,6 +25,14 @@ if (tweetEl) {
   const root = ReactDOM.createRoot(tweetEl);
   root.render(e(TweetComponent, tweetEl.dataset)); 
 }
+
+
+const tweetFeedEl=document.getElementById('tweetme2-feed')
+if (tweetFeedEl) {  
+  const root = ReactDOM.createRoot(tweetFeedEl);
+  root.render(e(FeedComponent, tweetFeedEl.dataset)); 
+}
+
 
 const tweetDetailElements = document.getElementById("tweetme-2-detail");
 if (tweetDetailElements) {

@@ -39,8 +39,10 @@ export function lookup(method, endpoint, callback, data) {
     if (xhr.status === 403) {
       const detail = xhr.response.detail;
       const error_message = "Authentication credentials were not provided.";
-      if (detail === error_message || xhr.response === error_message) {
-        window.location.href = '/login?showLoginRequired=true';
+      if (detail === error_message) {
+        if (window.location.href.indexOf("login") === -1) {
+          window.location.href = '/login?showLoginRequired=true'; 
+        }
       }
     }
     callback(xhr.response, xhr.status);
