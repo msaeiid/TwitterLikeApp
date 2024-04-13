@@ -10,7 +10,7 @@ def login_view(request, *args, **kwargs):
     if form.is_valid():
         user_ = form.get_user()
         login(request, user_)
-        return redirect(reverse('home'))
+        return redirect(reverse('feed'))
     context = {
         "form": form,
         "btn_label": "Login",

@@ -10,6 +10,10 @@ def home_view(request, *args, **kwargs):
     return render(request, template_name="pages/home.html", context={})
 
 
+def feed_view(request, *args, **kwargs):
+    return render(request, template_name='pages/feed.html')
+
+
 def tweet_list_view(request, *args, **kwargs):
     return render(request, template_name="tweets/list.html")
 

@@ -27,7 +27,7 @@ class TweetQuerySet(models.QuerySet):
         return self.filter(
             Q(user__id__in=follower_users_id) |
             Q(user=user)
-        ).distinct('pk').order_by('-timestamp')
+        ).distinct().order_by('-timestamp')
 
 
 class TweetManager(models.Manager):

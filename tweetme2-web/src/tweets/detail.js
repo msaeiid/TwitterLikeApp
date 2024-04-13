@@ -35,7 +35,7 @@ export function Tweet(props) {
   return <div className={className}>
     {isRetweet === true && <div className='mb-2'>
       <span className='small text-muted'>Retweet via <UserDisplay author={reTweeter} /></span>
-    </div>}cd 
+    </div>}
     <div className='d-flex'>
       <div className=''>
         <UserPicture author={tweet.author} />
