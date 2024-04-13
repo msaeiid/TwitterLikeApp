@@ -4,6 +4,8 @@ from rest_framework.decorators import (api_view,
                                        permission_classes)
 from rest_framework import permissions
 from django.contrib.auth import get_user_model
+from ..serializers import ProfileSerializer
+from ..models import Profile
 
 
 User = get_user_model()
@@ -37,3 +39,13 @@ def user_follow_view(request, username, *args, **kwargs):
         'count': followed_user.profile.followers.count()
     }
     return Response(data=data, status=status.HTTP_200_OK)
+
+
+@api_view(http_method_names=(['GET']))
+def profile_detail_api_view(request, username, *args, **kwargs):
+    qs = Profile.objects.filter(user__username=username)
+    if not qs.exists():
+        return Response({"detail": "User not found!"}, status=status.HTTP_404_NOT_FOUND)
+    profile = qs.first()
+    serializer = ProfileSerializer(instance=profile)
+    return Response(serializer.data, status=status.HTTP_200_OK)
