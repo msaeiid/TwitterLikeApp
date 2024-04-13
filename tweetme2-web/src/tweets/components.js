@@ -21,16 +21,17 @@ export function TweetComponent(props) {
 
 
 export function FeedComponent(props) {
-  const [newTweets, setNewTweets] = useState([]);
+  //const [newTweets, setNewTweets] = useState([]);
   const canTweet = props.canTweet === "false" ? false : true;
   const handleNewTweet = (newTweets) => {
-    let tempNewTweets = [...newTweets];
-    tempNewTweets.unshift(newTweets);
-    setNewTweets(tempNewTweets);
+    //let tempNewTweets = [...newTweets];
+    console.log('here there');
+    //tempNewTweets.unshift(newTweets);
+    //setNewTweets(tempNewTweets);
   }
   return <div div className={props.className} >
     {canTweet === true && <TweetCreate didTweet={handleNewTweet} className='col-12 mb-3' />}
-    <FeedList newTweets={newTweets} {...props} />
+    <FeedList {...props} />
   </div>
 }
 

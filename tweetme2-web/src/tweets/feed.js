@@ -8,7 +8,7 @@ export function FeedList(props) {
   const [nextUrl, setNextUrl] = useState(null);
   const [tweetDidSet, setTweetDidSet] = useState(false);
   useEffect(() => {
-    let final = [...props.newTweets].concat(tweetsInit);
+    let final = tweetsInit;
     if (final.length !== tweets.length) {
       setTweets(final);
     };

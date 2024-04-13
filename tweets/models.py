@@ -22,13 +22,12 @@ class TweetQuerySet(models.QuerySet):
     # it query comes after all()
     def feed(self, user):
         profiles_exit = user.following.exists()
-        if profiles_exit:
-            follower_users_id = user.following.values_list(
-                'user__id', flat=True)
-            return self.filter(
-                Q(user__id__in=follower_users_id) |
-                Q(user=user)
-            ).distinct().order_by('-timestamp')
+        follower_users_id = user.following.values_list(
+            'user__id', flat=True)
+        return self.filter(
+            Q(user__id__in=follower_users_id) |
+            Q(user=user)
+        ).distinct('pk').order_by('-timestamp')
 
 
 class TweetManager(models.Manager):
