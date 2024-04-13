@@ -40,7 +40,14 @@ def profile_update_view(request, *args, **kwargs):
 
 def profile_detail_view(request, username, *args, **kwargs):
     qs = Profile.objects.filter(user__username=username)
+    is_following = False
     if qs.exists():
-        context = {'username': qs.first()}
+        if request.user.is_authenticated:
+            is_following = Profile.followers.contains(
+                request.user)  # don't user in it's not efficient way
+        context = {
+            'username': qs.first(),
+            'is_following': is_following
+        }
         return render(request, template_name="profiles/details.html", context=context)
     raise Http404
