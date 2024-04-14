@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ProfileBadgeComponent } from './profiles';
 import {
   TweetComponent,
   TweetDetailComponent,
@@ -40,6 +41,12 @@ if (tweetDetailElements) {
   root.render(e(TweetDetailComponent, tweetDetailElements.dataset)); 
 }
 
+
+const userProfileBadgeElements = document.getElementById("tweetme-2-profile-badge");
+if (userProfileBadgeElements) {
+  const root = ReactDOM.createRoot(userProfileBadgeElements);
+  root.render(e(ProfileBadgeComponent, userProfileBadgeElements.dataset)); 
+}
 
 
 

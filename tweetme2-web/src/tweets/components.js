@@ -19,7 +19,6 @@ export function TweetComponent(props) {
   </div>
 }
 
-
 export function FeedComponent(props) {
   //const [newTweets, setNewTweets] = useState([]);
   const canTweet = props.canTweet === "false" ? false : true;
@@ -34,8 +33,6 @@ export function FeedComponent(props) {
     <FeedList {...props} />
   </div>
 }
-
-
 
 export function TweetDetailComponent(props) {
   const { tweetId } = props;
