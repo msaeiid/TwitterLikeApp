@@ -19,10 +19,9 @@ def user_follow_view(request, username, *args, **kwargs):
 
     # prevent user fom following itself, Its not a good practice to do it here we can handle it with a signal on save or create of FollowRelation to check user and profile are not same...
     if current_user == followed_user.first():
-        data = {
-            'count': current_user.profile.followers.count()
-        }
-        return Response(data=data, status=status.HTTP_200_OK)
+        serializer = ProfileSerializer(
+            instance=current_user.profile, context={"request": request})
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     if not followed_user.exists():
         return Response({}, status=status.HTTP_404_NOT_FOUND)
@@ -35,10 +34,10 @@ def user_follow_view(request, username, *args, **kwargs):
         followed_user.profile.followers.remove(current_user)
     else:
         pass
-    data = {
-        'count': followed_user.profile.followers.count()
-    }
-    return Response(data=data, status=status.HTTP_200_OK)
+
+    serializer = ProfileSerializer(
+        instance=current_user.profile, context={"request": request})
+    return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(http_method_names=(['GET']))

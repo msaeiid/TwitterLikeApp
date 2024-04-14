@@ -1,10 +1,9 @@
 import React from 'react';
 
 export function UserPicture(props) {
-    const { author } = props;
-    return <UserLink username={author.username}><span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>
-      {author.username[0]}
-    </span></UserLink>
+    const { author, hideLink } = props;
+    const userIdSpan = <span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>{author.username[0]}</span>
+    return hideLink === true ?  userIdSpan  : <UserLink username={author.username}>{userIdSpan}</UserLink>;
 }
   
 export function UserLink(props) {
@@ -19,10 +18,10 @@ export function UserLink(props) {
 }
   
 export function UserDisplay(props) {
-    const { author, includeFullName } = props;
+    const { author, includeFullName,hideLink } = props;
     const nameDisplay = includeFullName === true ? `${author.first_name} ${author.last_name} ` : null;
     return <React.Fragment>
-      {nameDisplay}
-        <UserLink username={author.username}>@{author.username}</UserLink>
+        {nameDisplay}
+        {hideLink === true ? `@${author.username}` :<UserLink username={author.username}>@{author.username}</UserLink>}
     </React.Fragment>
 }
