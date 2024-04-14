@@ -36,7 +36,7 @@ def user_follow_view(request, username, *args, **kwargs):
         pass
 
     serializer = ProfileSerializer(
-        instance=current_user.profile, context={"request": request})
+        instance=followed_user.profile, context={"request": request})
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
