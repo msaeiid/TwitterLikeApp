@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   apiProfileDetail,
   apiProfileFollowToggle
@@ -20,8 +20,14 @@ function ProfileBadge(props) {
       didFollowToggle(currentVerb);
     }
   }
-  return user ? <div>
+  return user ? <div className='mx-2 my-2'>
     <UserPicture author={user} hideLink></UserPicture>
+    <p>
+      Followers: {user.follower_count}
+    </p>
+    <p>
+      Followers: {user.following_count}
+    </p>
     <p><UserDisplay author={user} includeFullName hideLink /></p>
     <button className='btn btn-primary' onClick={handleFollowToggle}>{currentVerb}</button>
   </div> : null
