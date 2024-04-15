@@ -9,6 +9,7 @@ import {
   UserPicture
 } from './components';
 
+import { DisplayCount } from './utils';
 
 function ProfileBadge(props) {
   const { user, didFollowToggle, profileLoading } = props;
@@ -23,10 +24,16 @@ function ProfileBadge(props) {
   return user ? <div className='mx-2 my-2'>
     <UserPicture author={user} hideLink></UserPicture>
     <p>
-      Followers: {user.follower_count}
+      <DisplayCount>{ user.follower_count}</DisplayCount> {user.follower_count === 1 || user.follower_count === 0 ? "Follower":"Followers"}
     </p>
     <p>
-      Followers: {user.following_count}
+    <DisplayCount>{ user.following_count}</DisplayCount> Following
+    </p>
+    <p>
+      {user.location}
+    </p>
+    <p>
+      {user.bio}
     </p>
     <p><UserDisplay author={user} includeFullName hideLink /></p>
     <button className='btn btn-primary' onClick={handleFollowToggle}>{currentVerb}</button>
