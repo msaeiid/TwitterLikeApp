@@ -1,7 +1,3 @@
-Here's a **README.md** file for your project:
-
----
-
 # Twitter-like App
 
 This repository is based on the YouTube tutorial **"Create a Twitter-like App with Python, Django, JavaScript, and React"**. It is a full-stack web application that mimics core functionalities of Twitter, using **Django** for the backend and **React** for the frontend.
